@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vivechana Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">Vivechana System</div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">Dashboard</a>
+                <a href="case-management.html" class="nav-item">Manage Cases</a>
+                <a href="ai-assistant.html" class="nav-item">AI Assistant</a>
+                <a href="#" class="nav-item" id="logout-btn">Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <h2>Dashboard</h2>
+                <div class="user-profile">
+                    <div class="user-profile-info">
+                        <div class="user-name" id="user-name-display">Officer Name</div>
+                        <div class="user-role" id="user-role-display">Role | District</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Total Cases</div>
+                        <div class="stat-value" id="stat-total">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Pending Investigations</div>
+                        <div class="stat-value" id="stat-pending">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Completed Investigations</div>
+                        <div class="stat-value" id="stat-completed">0</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Cases</h3>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="text" id="search-input" class="form-control" placeholder="Search FIR/Case ID..." style="width: 250px;">
+                            <select id="filter-status" class="form-control" style="width: 150px;">
+                                <option value="">All Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>FIR Number</th>
+                                    <th>Case ID</th>
+                                    <th>Sections</th>
+                                    <th>Incident Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cases-table-body">
+                                <tr>
+                                    <td colspan="5" style="text-align: center;">Loading cases...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

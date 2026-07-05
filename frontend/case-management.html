@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Case - Vivechana Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .documents-list {
+            margin-top: 1rem;
+        }
+        .document-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            margin-bottom: 0.5rem;
+        }
+        .document-item a {
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">Vivechana System</div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">Dashboard</a>
+                <a href="case-management.html" class="nav-item active">Manage Cases</a>
+                <a href="ai-assistant.html" class="nav-item">AI Assistant</a>
+                <a href="#" class="nav-item" id="logout-btn">Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <h2 id="page-title">Register New Case</h2>
+                <div class="user-profile">
+                    <div class="user-profile-info">
+                        <div class="user-name" id="user-name-display">Officer Name</div>
+                        <div class="user-role" id="user-role-display">Role | District</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="card" style="max-width: 800px; margin: 0 auto;">
+                    <div class="card-header">
+                        <h3 class="card-title">Case Details</h3>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <form id="case-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>FIR Number</label>
+                                    <input type="text" id="firNumber" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Case ID</label>
+                                    <input type="text" id="caseId" class="form-control" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Sections (IPC/BNS)</label>
+                                    <input type="text" id="sections" class="form-control" required placeholder="e.g. 302, 307 IPC">
+                                </div>
+                                <div class="form-group">
+                                    <label>Incident Date</label>
+                                    <input type="date" id="incidentDate" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Victim Details</label>
+                                <textarea id="victimDetails" class="form-control" required placeholder="Name, Age, Address, Contact..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Accused Details</label>
+                                <textarea id="accusedDetails" class="form-control" required placeholder="Name, Description, Status..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Investigation Notes (Case Diary Entry)</label>
+                                <textarea id="investigationNotes" class="form-control" placeholder="Update your investigation progress here..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Upload Documents (Images, PDFs)</label>
+                                <input type="file" id="documents" class="form-control" multiple accept=".pdf,.jpg,.jpeg,.png">
+                                <div id="existing-documents" class="documents-list"></div>
+                            </div>
+
+                            <div class="form-group" id="status-group" style="display: none;">
+                                <label>Status</label>
+                                <select id="status" class="form-control">
+                                    <option value="Pending">Pending</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+
+                            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                                <button type="submit" class="btn btn-primary" id="save-btn">Save Case</button>
+                                <a href="dashboard.html" class="btn btn-outline" style="text-align: center;">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/case.js"></script>
+</body>
+</html>

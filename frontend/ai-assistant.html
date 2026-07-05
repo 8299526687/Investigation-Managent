@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - Vivechana Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">Vivechana System</div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">Dashboard</a>
+                <a href="case-management.html" class="nav-item">Manage Cases</a>
+                <a href="ai-assistant.html" class="nav-item active">AI Assistant</a>
+                <a href="#" class="nav-item" id="logout-btn">Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <h2>AI Investigation Assistant</h2>
+                <div class="user-profile">
+                    <div class="user-profile-info">
+                        <div class="user-name" id="user-name-display">Officer Name</div>
+                        <div class="user-role" id="user-role-display">Role | District</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message ai">
+                            Hello Officer! I am your AI assistant. How can I help you with your investigations today? I can suggest next steps, help draft case diaries, or suggest evidence collection strategies based on IPC/BNS sections.
+                        </div>
+                    </div>
+                    <form class="chat-input" id="chat-form">
+                        <input type="text" id="chat-input" class="form-control" placeholder="Ask for investigation advice or case diary help..." required autocomplete="off">
+                        <button type="submit" class="btn btn-primary" id="chat-submit">Send</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/ai.js"></script>
+</body>
+</html>

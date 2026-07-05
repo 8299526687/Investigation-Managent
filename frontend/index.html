@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivechana Management System - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card" id="login-card">
+            <div class="auth-header">
+                <h1>Officer Portal</h1>
+                <p>Sign in to your account</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="pno">PNO (Personal Number)</label>
+                    <input type="text" id="pno" class="form-control" required placeholder="Enter your PNO">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <a href="#" id="show-register" style="font-size: 0.875rem;">Don't have an account? Register</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="auth-card" id="register-card" style="display: none;">
+            <div class="auth-header">
+                <h1>Officer Registration</h1>
+                <p>Create a new account</p>
+            </div>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" class="form-control" required placeholder="e.g. Inspector Ramesh">
+                </div>
+                <div class="form-group">
+                    <label for="reg-pno">PNO (Personal Number)</label>
+                    <input type="text" id="reg-pno" class="form-control" required placeholder="e.g. 123456789">
+                </div>
+                <div class="form-group">
+                    <label for="reg-role">Role</label>
+                    <select id="reg-role" class="form-control" required>
+                        <option value="SI">Sub Inspector (SI)</option>
+                        <option value="Inspector">Inspector</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reg-district">District</label>
+                    <input type="text" id="reg-district" class="form-control" required placeholder="e.g. Lucknow">
+                </div>
+                <div class="form-group">
+                    <label for="reg-station">Police Station</label>
+                    <input type="text" id="reg-station" class="form-control" required placeholder="e.g. Hazratganj">
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" class="form-control" required placeholder="Create a password">
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <a href="#" id="show-login" style="font-size: 0.875rem;">Already have an account? Sign In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
