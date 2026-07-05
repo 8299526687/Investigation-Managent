@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Fetch cases
     try {
-        const res = await fetch('http://localhost:5001/api/cases', {
+        const res = await fetch('https://investigation-managent.onrender.com/api/cases', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         currentCases = await res.json();
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${new Date(d.uploadDate || Date.now()).toLocaleDateString()}</td>
                 <td>${d.uploadedBy || 'System'}</td>
                 <td>${d.fileSize || '-'}</td>
-                <td><a href="http://localhost:5001/${d.filePath.replace(/\\\\/g, '/')}" target="_blank" class="btn" style="padding: 0.2rem 0.5rem; font-size: 0.8rem; margin: 0;">View</a></td>
+                <td><a href="https://investigation-managent.onrender.com/${d.filePath.replace(/\\\\/g, '/')}" target="_blank" class="btn" style="padding: 0.2rem 0.5rem; font-size: 0.8rem; margin: 0;">View</a></td>
             </tr>
         `).join('');
     }
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         uploadBtn.disabled = true;
 
         try {
-            const res = await fetch(`http://localhost:5001/api/cases/${caseSelect.value}/documents`, {
+            const res = await fetch(`https://investigation-managent.onrender.com/api/cases/${caseSelect.value}/documents`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (res.ok) {
                 showNotification('Document uploaded successfully!');
                 // Refresh case docs
-                const updatedCaseRes = await fetch(`http://localhost:5001/api/cases/${caseSelect.value}`, {
+                const updatedCaseRes = await fetch(`https://investigation-managent.onrender.com/api/cases/${caseSelect.value}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const updatedCase = await updatedCaseRes.json();

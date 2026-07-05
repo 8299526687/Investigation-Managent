@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let currentCases = [];
     try {
-        const res = await fetch('http://localhost:5001/api/cases', { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await fetch('https://investigation-managent.onrender.com/api/cases', { headers: { 'Authorization': `Bearer ${token}` } });
         currentCases = await res.json();
     } catch(err) { console.error(err); }
 
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <p style="font-size: 0.85rem; color: var(--text-muted);">${new Date(d.uploadDate).toLocaleString()} • ${d.description || 'No description'}</p>
                         </div>
                     </div>
-                    <a href="http://localhost:5001${urlPath}" target="_blank" class="task-badge green">View File</a>
+                    <a href="https://investigation-managent.onrender.com${urlPath}" target="_blank" class="task-badge green">View File</a>
                 </div>
                 `;
             }).join('');
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td>${d.fileType}</td>
                         <td>${d.description || '-'}</td>
                         <td>${new Date(d.uploadDate).toLocaleDateString()}</td>
-                        <td><a href="http://localhost:5001${urlPath}" target="_blank" class="task-badge green">View</a></td>
+                        <td><a href="https://investigation-managent.onrender.com${urlPath}" target="_blank" class="task-badge green">View</a></td>
                     </tr>
                     `;
                 }).join('');
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             modalSubmit.onclick = async () => {
                 const data = getData();
-                const res = await fetch(`http://localhost:5001/api/cases/${globalSelect.value}/${endpointSuffix}`, {
+                const res = await fetch(`https://investigation-managent.onrender.com/api/cases/${globalSelect.value}/${endpointSuffix}`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
@@ -244,14 +244,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 formData.append('files', fileInput.files[0]); // Must be 'files' for multer
 
                 try {
-                    const res = await fetch(`http://localhost:5001/api/cases/${globalSelect.value}/documents`, {
+                    const res = await fetch(`https://investigation-managent.onrender.com/api/cases/${globalSelect.value}/documents`, {
                         method: 'POST',
                         headers: { 'Authorization': `Bearer ${token}` },
                         body: formData
                     });
                     if(res.ok) {
                         // Re-fetch all cases to get the updated document list properly
-                        const casesRes = await fetch('http://localhost:5001/api/cases', { headers: { 'Authorization': `Bearer ${token}` } });
+                        const casesRes = await fetch('https://investigation-managent.onrender.com/api/cases', { headers: { 'Authorization': `Bearer ${token}` } });
                         currentCases = await casesRes.json();
                         renderCurrentPage();
                         modal.classList.remove('active');
