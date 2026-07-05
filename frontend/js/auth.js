@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = document.getElementById('password').value;
 
         try {
-            const res = await fetch('/api/auth/login', {
+            const res = await fetch('http://localhost:5001/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ pno, password })
@@ -52,14 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const payload = {
             name: document.getElementById('reg-name').value,
             pno: document.getElementById('reg-pno').value,
-            role: document.getElementById('reg-role').value,
-            district: document.getElementById('reg-district').value,
-            policeStation: document.getElementById('reg-station').value,
+            role: "SI",
+            district: "Lucknow",
+            policeStation: "Hazratganj",
             password: document.getElementById('reg-password').value
         };
 
         try {
-            const res = await fetch('/api/auth/register', {
+            const res = await fetch('http://localhost:5001/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

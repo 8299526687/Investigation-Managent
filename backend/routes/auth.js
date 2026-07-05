@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const { User } = require('../db');
 
-// Register Officer (For simplicity, we leave registration open, though in real life it would be restricted)
+// Register Officer
 router.post('/register', async (req, res) => {
   try {
     const { name, pno, password, role, district, policeStation } = req.body;
@@ -17,11 +17,9 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    user = new User({
+    user = await User.create({
       name, pno, password: hashedPassword, role, district, policeStation
     });
-
-    await user.save();
     res.status(201).json({ message: 'Officer registered successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -39,10 +37,10 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    const payload = { user: { id: user.id } };
+    const payload = { user: { id: user._id } };
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secretKey', { expiresIn: '1d' });
 
-    res.json({ token, user: { id: user.id, name: user.name, role: user.role, district: user.district, policeStation: user.policeStation } });
+    res.json({ token, user: { id: user._id, name: user.name, role: user.role, district: user.district, policeStation: user.policeStation } });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

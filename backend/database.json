@@ -1,0 +1,90 @@
+{
+  "users": [
+    {
+      "name": "Shivam",
+      "pno": "212520236",
+      "password": "$2b$10$qflRYEkQFpcqEmgh.EypUOET8atFfG5tkN6kZ/xnqK8dWRE/HJzCq",
+      "role": "SI",
+      "district": "lucknow",
+      "policeStation": "Ahmamau",
+      "_id": "1783232851114",
+      "id": "1783232851114",
+      "createdAt": "2026-07-05T06:27:31.114Z"
+    },
+    {
+      "name": "Shivam",
+      "pno": "212520235",
+      "password": "$2b$10$uD5JRxqizcn07A/WSyrf3O1zUvMMxifNU.66BbazqvUzKaRH3khXq",
+      "role": "SI",
+      "district": "lucknow",
+      "policeStation": "Ahmamau",
+      "_id": "1783233440739",
+      "id": "1783233440739",
+      "createdAt": "2026-07-05T06:37:20.739Z"
+    }
+  ],
+  "cases": [
+    {
+      "firNumber": "456",
+      "caseId": "1234567489",
+      "sections": "302",
+      "incidentDate": "2026-06-17",
+      "victimDetails": "ramu shayami",
+      "accusedDetails": "known",
+      "investigationNotes": "note ",
+      "documents": [
+        {
+          "fileName": "WhatsApp Image 2026-07-05 at 12.14.54 PM.jpeg",
+          "filePath": "uploads\\1783235436703.jpeg"
+        }
+      ],
+      "officer": "1783232851114",
+      "_id": "1783235436705",
+      "id": "1783235436706",
+      "createdAt": "2026-07-05T07:10:36.706Z",
+      "updatedAt": "2026-07-05T07:11:08.929Z",
+      "status": "Pending"
+    },
+    {
+      "firNumber": "112",
+      "caseId": "123854566",
+      "sections": "304",
+      "incidentDate": "2026-06-08",
+      "victimDetails": "ramesh",
+      "accusedDetails": "ravi",
+      "investigationNotes": "note",
+      "documents": [
+        {
+          "fileName": "Screenshot 2025-10-18 095343.png",
+          "filePath": "uploads\\1783235682964.png"
+        }
+      ],
+      "officer": "1783232851114",
+      "_id": "1783235683000",
+      "id": "1783235683000",
+      "createdAt": "2026-07-05T07:14:43.000Z",
+      "updatedAt": "2026-07-05T07:14:59.790Z",
+      "status": "Completed"
+    },
+    {
+      "firNumber": "420",
+      "caseId": "859545685",
+      "sections": "306",
+      "incidentDate": "2026-05-13",
+      "victimDetails": "Anupam",
+      "accusedDetails": "shivam",
+      "investigationNotes": "note",
+      "documents": [
+        {
+          "fileName": "Screenshot 2025-07-15 161018.png",
+          "filePath": "uploads\\1783238353402.png"
+        }
+      ],
+      "officer": "1783232851114",
+      "_id": "1783238353486",
+      "id": "1783238353486",
+      "createdAt": "2026-07-05T07:59:13.486Z",
+      "updatedAt": "2026-07-05T07:59:13.486Z"
+    }
+  ]
+}

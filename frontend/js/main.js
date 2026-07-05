@@ -39,15 +39,20 @@ async function apiFetch(url, options = {}) {
         }
     }
 
-    const response = await fetch(`/api${url}`, { ...options, headers });
-    
-    if (response.status === 401) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = 'index.html';
+    try {
+        const API_BASE_URL = 'http://localhost:5001/api';
+        const response = await fetch(`${API_BASE_URL}${url}`, { ...options, headers });
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        return response;
+    } catch (err) {
+        console.error("Backend Error:", err);
+        throw err;
     }
-    
-    return response;
 }
 
 function logout() {

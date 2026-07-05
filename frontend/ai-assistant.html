@@ -11,12 +11,34 @@
     <div class="app-layout">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="sidebar-brand">Vivechana System</div>
+            <div class="sidebar-brand">
+                <img src="img/logo.png" alt="Logo" style="width: 45px; margin-bottom: 0.5rem; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1));">
+                <br>उत्तर प्रदेश पुलिस<br><span style="font-size: 0.8rem; font-weight: normal; color: rgba(255,255,255,0.7);">विवेचना प्रबंधन प्रणाली</span>
+            </div>
             <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-item">Dashboard</a>
-                <a href="case-management.html" class="nav-item">Manage Cases</a>
-                <a href="ai-assistant.html" class="nav-item active">AI Assistant</a>
-                <a href="#" class="nav-item" id="logout-btn">Logout</a>
+                <a href="dashboard.html" class="nav-item"><i class="ph ph-squares-four" style="margin-right: 8px;"></i> डैशबोर्ड</a>
+                <a href="case-management.html" class="nav-item"><i class="ph ph-folder" style="margin-right: 8px;"></i> केस प्रबंधन</a>
+                <a href="ai-assistant.html" class="nav-item active"><i class="ph ph-robot" style="margin-right: 8px;"></i> AI सहायक</a>
+                
+                <div style="padding: 1rem 1.5rem 0.5rem; font-size: 0.75rem; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 600; letter-spacing: 1px;">विवेचना उपकरण (DIMS)</div>
+                <a href="case-overview.html" class="nav-item"><i class="ph ph-info" style="margin-right: 8px;"></i> केस विवरण (Overview)</a>
+                <a href="case-diary.html" class="nav-item"><i class="ph ph-book-open" style="margin-right: 8px;"></i> केस डायरी (Parcha)</a>
+                <a href="investigation-timeline.html" class="nav-item"><i class="ph ph-clock" style="margin-right: 8px;"></i> घटनाक्रम (Timeline)</a>
+                
+                <a href="evidence-management.html" class="nav-item"><i class="ph ph-briefcase" style="margin-right: 8px;"></i> मालखाना/साक्ष्य (Evidence)</a>
+                <a href="witness-management.html" class="nav-item"><i class="ph ph-users" style="margin-right: 8px;"></i> गवाह (Witnesses)</a>
+                <a href="accused-management.html" class="nav-item"><i class="ph ph-user-focus" style="margin-right: 8px;"></i> आरोपी (Accused)</a>
+                
+                <a href="notice-process.html" class="nav-item"><i class="ph ph-envelope-simple" style="margin-right: 8px;"></i> नोटिस (Notice & Process)</a>
+                <a href="medical-module.html" class="nav-item"><i class="ph ph-first-aid" style="margin-right: 8px;"></i> मेडिकल (Medical)</a>
+                <a href="fsl-module.html" class="nav-item"><i class="ph ph-flask" style="margin-right: 8px;"></i> FSL रिपोर्ट</a>
+                
+                
+                <div style="padding: 1rem 1.5rem 0.5rem; font-size: 0.75rem; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 600; letter-spacing: 1px;">अन्य (Other)</div>
+                <a href="smart-search.html" class="nav-item"><i class="ph ph-magnifying-glass" style="margin-right: 8px;"></i> स्मार्ट खोज (Search)</a>
+                <a href="document-security.html" class="nav-item"><i class="ph ph-shield-check" style="margin-right: 8px;"></i> सुरक्षा (Security)</a>
+
+                <a href="#" class="nav-item" id="logout-btn" style="margin-top: 1rem;"><i class="ph ph-sign-out" style="margin-right: 8px;"></i> लॉग आउट</a>
             </nav>
         </aside>
 
@@ -33,6 +55,38 @@
             </header>
 
             <div class="content-wrapper">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Quick Actions</h3>
+                    </div>
+                    <div style="padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <button class="btn" style="background: #f8fafc; color: var(--primary-color); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding: 1.5rem;">
+                            <i class="ph ph-file-text" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            Generate Case Diary
+                        </button>
+                        <button class="btn" style="background: #f8fafc; color: var(--primary-color); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding: 1.5rem;">
+                            <i class="ph ph-magnifying-glass" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            Summarize Investigation
+                        </button>
+                        <button class="btn" style="background: #f8fafc; color: var(--primary-color); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding: 1.5rem;">
+                            <i class="ph ph-warning-circle" style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--brand-red);"></i>
+                            Find Missing Documents
+                        </button>
+                        <button class="btn" style="background: #f8fafc; color: var(--primary-color); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding: 1.5rem;">
+                            <i class="ph ph-file-pdf" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            Generate Charge Sheet Draft
+                        </button>
+                        <button class="btn" style="background: #f8fafc; color: var(--primary-color); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding: 1.5rem;">
+                            <i class="ph ph-clock" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            Show Pending Work
+                        </button>
+                        <button class="btn" style="background: #f8fafc; color: var(--primary-color); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding: 1.5rem;">
+                            <i class="ph ph-book-open" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            Explain IPC Sections
+                        </button>
+                    </div>
+                </div>
+
                 <div class="chat-container">
                     <div class="chat-messages" id="chat-messages">
                         <div class="message ai">

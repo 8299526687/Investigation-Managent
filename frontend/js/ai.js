@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 appendMessage(data.reply, 'ai');
             } else {
-                appendMessage('Sorry, I encountered an error. Please try again.', 'ai');
+                appendMessage(`[Debug Error]: ${data.message} - ${data.error || 'Unknown Error'}`, 'ai');
                 showNotification(data.message || 'Error communicating with AI', 'error');
             }
         } catch (error) {

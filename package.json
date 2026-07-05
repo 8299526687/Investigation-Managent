@@ -1,0 +1,8 @@
+{
+  "name": "investigation-management-system",
+  "version": "1.0.0",
+  "description": "Root package.json to easily start the backend",
+  "scripts": {
+    "start": "cd backend && npm run start"
+  }
+}

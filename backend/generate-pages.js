@@ -1,0 +1,387 @@
+const fs = require('fs');
+const path = require('path');
+
+const sidebarHtml = `
+            <div class="sidebar-brand">
+                <img src="img/logo.png" alt="Logo" style="width: 45px; margin-bottom: 0.5rem; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1));">
+                <br>उत्तर प्रदेश पुलिस<br><span style="font-size: 0.8rem; font-weight: normal; color: rgba(255,255,255,0.7);">विवेचना प्रबंधन प्रणाली</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item {dashboard_active}"><i class="ph ph-squares-four" style="margin-right: 8px;"></i> डैशबोर्ड</a>
+                <a href="case-management.html" class="nav-item {case-management_active}"><i class="ph ph-folder" style="margin-right: 8px;"></i> केस प्रबंधन</a>
+                <a href="ai-assistant.html" class="nav-item {ai-assistant_active}"><i class="ph ph-robot" style="margin-right: 8px;"></i> AI सहायक</a>
+                
+                <div style="padding: 1rem 1.5rem 0.5rem; font-size: 0.75rem; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 600; letter-spacing: 1px;">विवेचना उपकरण (DIMS)</div>
+                <a href="case-overview.html" class="nav-item {case-overview_active}"><i class="ph ph-info" style="margin-right: 8px;"></i> केस विवरण (Overview)</a>
+                <a href="case-diary.html" class="nav-item {case-diary_active}"><i class="ph ph-book-open" style="margin-right: 8px;"></i> केस डायरी (Parcha)</a>
+                <a href="investigation-timeline.html" class="nav-item {investigation-timeline_active}"><i class="ph ph-clock" style="margin-right: 8px;"></i> घटनाक्रम (Timeline)</a>
+                
+                <a href="evidence-management.html" class="nav-item {evidence-management_active}"><i class="ph ph-briefcase" style="margin-right: 8px;"></i> मालखाना/साक्ष्य (Evidence)</a>
+                <a href="witness-management.html" class="nav-item {witness-management_active}"><i class="ph ph-users" style="margin-right: 8px;"></i> गवाह (Witnesses)</a>
+                <a href="accused-management.html" class="nav-item {accused-management_active}"><i class="ph ph-user-focus" style="margin-right: 8px;"></i> आरोपी (Accused)</a>
+                
+                <a href="notice-process.html" class="nav-item {notice-process_active}"><i class="ph ph-envelope-simple" style="margin-right: 8px;"></i> नोटिस (Notice & Process)</a>
+                <a href="medical-module.html" class="nav-item {medical-module_active}"><i class="ph ph-first-aid" style="margin-right: 8px;"></i> मेडिकल (Medical)</a>
+                <a href="fsl-module.html" class="nav-item {fsl-module_active}"><i class="ph ph-flask" style="margin-right: 8px;"></i> FSL रिपोर्ट</a>
+                
+                <div style="padding: 1rem 1.5rem 0.5rem; font-size: 0.75rem; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 600; letter-spacing: 1px;">अन्य (Other)</div>
+                <a href="smart-search.html" class="nav-item {smart-search_active}"><i class="ph ph-magnifying-glass" style="margin-right: 8px;"></i> स्मार्ट खोज (Search)</a>
+                <a href="document-security.html" class="nav-item {document-security_active}"><i class="ph ph-shield-check" style="margin-right: 8px;"></i> सुरक्षा (Security)</a>
+
+                <a href="#" class="nav-item" id="logout-btn" style="margin-top: 1rem;"><i class="ph ph-sign-out" style="margin-right: 8px;"></i> लॉग आउट</a>
+            </nav>
+`;
+
+function getTemplate(pageId, title, content) {
+    let sidebar = sidebarHtml.replace(new RegExp(`{${pageId}_active}`, 'g'), 'active');
+    sidebar = sidebar.replace(/{[a-z-]+_active}/g, '');
+    
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title} - Vivechana Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem; gap: 1rem; overflow-x: auto;}
+        .tab-item { padding: 0.75rem 1.5rem; cursor: pointer; color: var(--text-muted); font-weight: 500; border-bottom: 2px solid transparent; white-space: nowrap; }
+        .tab-item:hover { color: var(--primary-color); }
+        .tab-item.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+        
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; }
+        .gallery-item { background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius); padding: 1rem; text-align: center; }
+        .gallery-icon { font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem; }
+        
+        .timeline { position: relative; padding-left: 2rem; margin-top: 1rem; }
+        .timeline::before { content: ''; position: absolute; left: 0.5rem; top: 0; bottom: 0; width: 2px; background: var(--border-color); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -2rem; top: 0.25rem; width: 1rem; height: 1rem; border-radius: 50%; background: white; border: 2px solid var(--primary-color); }
+        .timeline-date { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .timeline-title { font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; }
+        
+        .task-list { display: flex; flex-direction: column; gap: 1rem; }
+        .task-item { display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; }
+        .task-details h4 { margin-bottom: 0.25rem; }
+        .task-badge { padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.8rem; font-weight: 500; background: #e0e7ff; color: #4338ca; }
+        .task-badge.red { background: #fee2e2; color: #b91c1c; }
+        .task-badge.green { background: #d1fae5; color: #059669; }
+        .task-badge.yellow { background: #fef3c7; color: #b45309; }
+        
+        .profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .profile-card { background: white; border: 1px solid var(--border-color); border-radius: var(--radius); padding: 1.5rem; display: flex; gap: 1rem; align-items: center; }
+        .profile-photo { width: 80px; height: 80px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #94a3b8; }
+        .profile-info h4 { margin-bottom: 0.25rem; }
+        .profile-info p { font-size: 0.85rem; color: var(--text-muted); }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 2rem; border-radius: var(--radius); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;}
+        .modal-overlay.active { display: flex; }
+        
+        /* Directory tree styling for Vault */
+        .directory-tree { display: flex; flex-direction: column; gap: 0.5rem; }
+        .dir-item { padding: 0.75rem 1rem; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .dir-item:hover { border-color: var(--primary-color); }
+        .dir-item i { color: #eab308; font-size: 1.25rem; margin-right: 0.5rem; }
+        
+        .global-case-selector { background: white; padding: 1rem; border-radius: var(--radius); border: 1px solid var(--border-color); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            ${sidebar}
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <h2>${title}</h2>
+                <div class="user-profile">
+                    <div class="user-profile-info">
+                        <div class="user-name" id="user-name-display">Officer Name</div>
+                        <div class="user-role" id="user-role-display">Role | District</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="global-case-selector">
+                    <strong>Select Active Case:</strong>
+                    <select id="global-case-select" class="form-control" style="width: 300px; margin: 0;">
+                        <option value="">Select Case...</option>
+                    </select>
+                </div>
+                <div id="module-content-area">
+                    ${content}
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+    <script src="js/main.js"></script>
+    <script src="js/modules.js"></script>
+</body>
+</html>`;
+}
+
+const pages = [
+    {
+        id: 'case-overview',
+        title: 'Case Overview',
+        content: `
+            <div class="stats-grid" id="overview-stats" style="display:none; margin-bottom: 1.5rem;">
+                <div class="stat-card">
+                    <div class="stat-title">FIR Number</div>
+                    <div class="stat-value" id="ov-fir">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Case Status</div>
+                    <div class="stat-value" id="ov-status">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Registration Date</div>
+                    <div class="stat-value" id="ov-date">-</div>
+                </div>
+            </div>
+            
+            <div class="card" id="overview-details" style="display:none;">
+                <div class="card-header"><h3 class="card-title">Case Details</h3></div>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                    <tr><td style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 500; width: 30%;">Police Station</td><td id="ov-ps" style="padding: 1rem; border-bottom: 1px solid var(--border-color);"></td></tr>
+                    <tr><td style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 500;">Sections</td><td id="ov-sections" style="padding: 1rem; border-bottom: 1px solid var(--border-color);"></td></tr>
+                    <tr><td style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 500;">Complainant/Victim</td><td id="ov-victim" style="padding: 1rem; border-bottom: 1px solid var(--border-color);"></td></tr>
+                    <tr><td style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 500;">Accused Details</td><td id="ov-accused" style="padding: 1rem; border-bottom: 1px solid var(--border-color);"></td></tr>
+                </table>
+            </div>
+        `
+    },
+    {
+        id: 'investigation-timeline',
+        title: 'Investigation Timeline',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Chronological Progress</h3>
+                    <button id="add-timeline-btn" class="btn" style="margin-top: 0; background: white; color: var(--primary-color); border: 1px solid var(--primary-color);">+ Add Event</button>
+                </div>
+                <div class="timeline" id="timeline-container">
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">Select a case first</div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'case-diary',
+        title: 'Case Diary (Parcha)',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Investigation Parchas</h3>
+                    <button id="add-parcha-btn" class="btn" style="margin-top: 0;">+ Create New Parcha</button>
+                </div>
+                <div class="task-list" id="parcha-container" style="margin-top: 1rem;">
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">Select a case first</div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'evidence-management',
+        title: 'Evidence Management',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Evidence Log</h3>
+                    <button id="add-evidence-btn" class="btn" style="margin-top: 0;">+ Add Evidence</button>
+                </div>
+                <div class="table-responsive" style="margin-top: 1rem;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Evd. Number</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Recovery Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="evidence-tbody">
+                            <tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">Select a case first</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'witness-management',
+        title: 'Witness Management',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Witness Directory</h3>
+                    <button id="add-witness-btn" class="btn" style="margin-top: 0;">+ Add Witness</button>
+                </div>
+                <div class="profile-grid" id="witness-grid" style="margin-top: 1rem;">
+                    <div style="text-align: center; grid-column: 1/-1; padding: 2rem; color: var(--text-muted);">Select a case first</div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'accused-management',
+        title: 'Accused Management',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Accused Registry</h3>
+                    <button id="add-accused-btn" class="btn" style="margin-top: 0;">+ Add Accused</button>
+                </div>
+                <div class="profile-grid" id="accused-grid" style="margin-top: 1rem;">
+                    <div style="text-align: center; grid-column: 1/-1; padding: 2rem; color: var(--text-muted);">Select a case first</div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'notice-process',
+        title: 'Notice & Process',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Summons & Warrants</h3>
+                    <button id="add-notice-btn" class="btn" style="margin-top: 0;">+ Issue Notice</button>
+                </div>
+                <div class="task-list" id="notice-container" style="margin-top: 1rem;">
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">Select a case first</div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'medical-module',
+        title: 'Medical Module',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Medical Reports (MLC/Postmortem)</h3>
+                    <button id="add-medical-btn" class="btn" style="margin-top: 0;">+ Add Medical Record</button>
+                </div>
+                <div class="task-list" id="medical-container" style="margin-top: 1rem;">
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">Select a case first</div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'fsl-module',
+        title: 'FSL Module',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">FSL Samples & Reports</h3>
+                    <button id="add-fsl-btn" class="btn" style="margin-top: 0;">+ Add FSL Entry</button>
+                </div>
+                <div class="task-list" id="fsl-container" style="margin-top: 1rem;">
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">Select a case first</div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'court-module',
+        title: 'Court Module',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Court Proceedings & Charge Sheet</h3>
+                    <button id="add-court-btn" class="btn" style="margin-top: 0;">+ Add Court Proceeding</button>
+                </div>
+                <div class="task-list" id="court-container" style="margin-top: 1rem;">
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">Select a case first</div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'digital-vault',
+        title: 'Digital Vault',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Categorized Vault Folders</h3>
+                </div>
+                <div class="directory-tree" style="margin-top: 1rem;">
+                    ${['FIR', 'Complaint', 'GD Entry', 'Investigation Parchas', 'Site Inspection', 'Site Plan', 'Witness Statements', 'Evidence', 'Recovery Memo', 'Arrest Memo', 'Personal Search Memo', 'Medical', 'FSL', 'CCTV', 'Images', 'Videos', 'Audio', 'Charge Sheet', 'Final Report', 'Court Orders', 'Other Documents'].map(folder => 
+                        `<div class="dir-item vault-folder" data-folder="${folder}">
+                            <div><i class="ph ph-folder"></i> <strong>${folder}</strong></div>
+                            <span class="task-badge">View files</span>
+                        </div>`
+                    ).join('')}
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'task-reminder',
+        title: 'Investigation Tasks',
+        content: `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Pending Investigation Tasks</h3>
+                </div>
+                <div class="task-list" id="task-list-container" style="margin-top: 1rem;">
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">Select a case first</div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'smart-search',
+        title: 'Smart Search',
+        content: `
+            <div class="card">
+                <div style="text-align: center; padding: 2rem 0;">
+                    <i class="ph ph-magnifying-glass" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                    <h3 style="margin-bottom: 1.5rem;">Global Case Search</h3>
+                    <div style="max-width: 600px; margin: 0 auto; display: flex; gap: 1rem;">
+                        <input type="text" id="smart-search-input" class="form-control" placeholder="Search by FIR, Name, Mobile, Sections..." style="flex: 1;">
+                        <button id="smart-search-btn" class="btn" style="width: auto;">Search</button>
+                    </div>
+                    <div id="smart-search-results" style="margin-top: 2rem; text-align: left; padding: 0 2rem;"></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'document-security',
+        title: 'Security & Logs',
+        content: `
+            <div class="card">
+                <div class="card-header"><h3 class="card-title">Audit Log</h3></div>
+                <div style="padding: 2rem; text-align: center; color: var(--text-muted);">No logs available</div>
+            </div>
+        `
+    },
+    {
+        id: 'storage-dashboard',
+        title: 'Storage Dashboard',
+        content: `
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-title">Total Storage Used</div><div class="stat-value">2.4 GB</div></div>
+                <div class="stat-card"><div class="stat-title">Documents</div><div class="stat-value">1.1 GB</div></div>
+                <div class="stat-card"><div class="stat-title">Media</div><div class="stat-value">1.3 GB</div></div>
+            </div>
+        `
+    }
+];
+
+const outDir = path.join(__dirname, '../frontend');
+pages.forEach(p => {
+    fs.writeFileSync(path.join(outDir, p.id + '.html'), getTemplate(p.id, p.title, p.content));
+});
+
+console.log("Generated updated dynamic pages successfully!");
