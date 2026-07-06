@@ -4,7 +4,7 @@ const Case = require('./models/Case');
 
 const connectDB = async () => {
     try {
-        const connUri = process.env.MONGODB_URI || 'mongodb+srv://sonishivam492_db_user:Shivam2026DatabasePass@cluster0.zfrknha.mongodb.net/InvestigationManagement?appName=Cluster0';
+        const connUri = 'mongodb+srv://sonishivam492_db_user:Shivam2026DatabasePass@cluster0.zfrknha.mongodb.net/InvestigationManagement?appName=Cluster0';
         await mongoose.connect(connUri);
         console.log('MongoDB Connected successfully');
     } catch (err) {
