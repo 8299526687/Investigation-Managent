@@ -4,19 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 
-// Auto-copy uploaded images to frontend/img folder
-try {
-  const frontendImgDir = path.join(__dirname, '../frontend/img');
-  if (!fs.existsSync(frontendImgDir)) {
-    fs.mkdirSync(frontendImgDir, { recursive: true });
-  }
-  const logoSource = 'C:\\Users\\eThana 04\\.gemini\\antigravity-ide\\brain\\c774eb72-f7bf-4f7c-9a57-e670ae9b5f9f\\media__1783242831698.png';
-  if (fs.existsSync(logoSource)) {
-    fs.copyFileSync(logoSource, path.join(frontendImgDir, 'logo.png'));
-  }
-} catch (err) {
-  console.error("Error auto-copying images:", err);
-}
+
 
 const dotenv = require('dotenv');
 
@@ -30,13 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Custom routes for the uploaded logos (Must be BEFORE express.static)
-app.get('/img/logo.png', (req, res) => {
-  res.sendFile('C:\\Users\\eThana 04\\.gemini\\antigravity-ide\\brain\\c774eb72-f7bf-4f7c-9a57-e670ae9b5f9f\\media__1783242831698.png');
-});
-app.get('/img/flag.png', (req, res) => {
-  res.sendFile('C:\\Users\\eThana 04\\.gemini\\antigravity-ide\\brain\\c774eb72-f7bf-4f7c-9a57-e670ae9b5f9f\\media__1783242831663.png');
-});
+
 
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, '../frontend')));
